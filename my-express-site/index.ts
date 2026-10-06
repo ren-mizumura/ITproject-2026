@@ -1,4 +1,5 @@
-import express, { Request, Response } from 'express';
+import { something } from 'express';
+import type { Request, Response } from 'express';
 import path from 'path';
 
 
