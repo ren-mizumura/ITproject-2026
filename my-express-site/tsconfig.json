@@ -7,7 +7,7 @@
 
     // Environment Settings
     // See also https://aka.ms/tsconfig/module
-    "module": "commonjs",
+    "module": "module",
     "target": "es2022",
     "types": [],
     // For nodejs:
