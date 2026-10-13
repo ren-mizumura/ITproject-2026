@@ -1,5 +1,5 @@
 import express from 'express';
-import { pool } from './db.ts';
+import { pool } from './db.js';
 import type { Request, Response } from 'express';
 import path from 'path';
 
