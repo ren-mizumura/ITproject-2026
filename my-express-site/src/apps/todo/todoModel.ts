@@ -14,7 +14,7 @@ export interface Todo {
  * TODO一覧をIDの昇順で取得する
  */
 export const getTodos = async (): Promise<Todo[]> => {
-  const result = await pool.query('SELECT * FROM todos ORDER BY id ASC');
+  const result = await pool.query('SELECT * FROM todo_tasks ORDER BY id ASC');
   return result.rows;
 };
 
@@ -23,7 +23,7 @@ export const getTodos = async (): Promise<Todo[]> => {
  */
 export const createTodo = async (title: string): Promise<Todo> => {
   const result = await pool.query(
-    'INSERT INTO todos (title) VALUES ($1) RETURNING *',
+    'INSERT INTO todo_tasks (title) VALUES ($1) RETURNING *',
     [title]
   );
   return result.rows[0];
@@ -33,7 +33,7 @@ export const createTodo = async (title: string): Promise<Todo> => {
  * IDを指定してTODOを1件取得する
  */
 export const getTodoById = async (id: number): Promise<Todo | null> => {
-  const result = await pool.query('SELECT * FROM todos WHERE id = $1', [id]);
+  const result = await pool.query('SELECT * FROM todo_tasks WHERE id = $1', [id]);
   return result.rows[0] || null;
 };
 
@@ -42,7 +42,7 @@ export const getTodoById = async (id: number): Promise<Todo | null> => {
  */
 export const updateTodoStatus = async (id: number, completed: boolean): Promise<Todo> => {
   const result = await pool.query(
-    'UPDATE todos SET completed = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
+    'UPDATE todo_tasks SET completed = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *',
     [completed, id]
   );
   return result.rows[0];
@@ -52,5 +52,5 @@ export const updateTodoStatus = async (id: number, completed: boolean): Promise<
  * TODOを削除する
  */
 export const deleteTodo = async (id: number): Promise<void> => {
-  await pool.query('DELETE FROM todos WHERE id = $1', [id]);
+  await pool.query('DELETE FROM todo_tasks WHERE id = $1', [id]);
 };
