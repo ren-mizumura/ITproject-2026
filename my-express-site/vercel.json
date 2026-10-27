@@ -1,11 +1,14 @@
 {
   "version": 2,
-  "functions": {
-    "index.ts": {
-      "runtime": "@vercel/node",
-      "includeFiles": "views/**"
+  "builds": [
+    {
+      "src": "index.ts",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["views/**"]
+      }
     }
-  },
+  ],
   "routes": [
     {
       "src": "/(.*)",
