@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import * as todoModel from './todoModel';
+import type { Request, Response } from 'express';
+import * as todoModel from './todoModel.js';
 
 /**
  * TODO一覧取得ハンドラー
@@ -48,7 +48,7 @@ export const createTodoHandler = async (req: Request, res: Response) => {
  */
 export const updateTodoHandler = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id as string, 10);
     if (isNaN(id) || id <= 0) {
       return res.status(400).json({ error: { code: 'BAD_REQUEST', message: '有効なIDを指定してください' } });
     }
@@ -77,7 +77,7 @@ export const updateTodoHandler = async (req: Request, res: Response) => {
  */
 export const deleteTodoHandler = async (req: Request, res: Response) => {
   try {
-    const id = parseInt(req.params.id, 10);
+    const id = parseInt(req.params.id as string, 10);
     if (isNaN(id) || id <= 0) {
       return res.status(400).json({ error: { code: 'BAD_REQUEST', message: '有効なIDを指定してください' } });
     }

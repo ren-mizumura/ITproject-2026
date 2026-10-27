@@ -1,6 +1,6 @@
 // ※既存の db.ts のエクスポート形式に合わせてインポートを調整してください。
 // 例: export const pool = ... とされている場合を想定しています。
-import {pool} from '../../../db';
+import {pool} from '../../../db.js';
 
 export interface Todo {
   id: number;

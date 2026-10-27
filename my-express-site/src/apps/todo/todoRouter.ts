@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getTodosHandler, createTodoHandler, updateTodoHandler, deleteTodoHandler } from './todoController';
+import { getTodosHandler, createTodoHandler, updateTodoHandler, deleteTodoHandler } from './todoController.js';
 
 export const todoPageRouter = Router();
 export const todoApiRouter = Router();
