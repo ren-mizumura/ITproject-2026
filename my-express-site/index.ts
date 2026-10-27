@@ -2,6 +2,7 @@ import express from 'express';
 import { pool } from './db.js';
 import type { Request, Response } from 'express';
 import path from 'path';
+import { todoPageRouter, todoApiRouter } from './src/apps/todo/todoRouter.js';
 
 
 const app = express(); // Expressアプリケーションを作成
@@ -16,6 +17,8 @@ app.use(express.static(path.join(process.cwd(), 'public'))); // CSSや画像な�
 app.set('view engine', 'ejs'); // テンプレートエンジンにEJSを設定
 app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存するフォルダーを指定
 
+app.use(express.json());
+
 
 // ------------------------------
 // ルーティング
@@ -23,11 +26,11 @@ app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存
 
 
 // 「/」にアクセスされたときの処理
-app.get('/', (req: Request, res: Response): void => {
-  res.send('Hello World!');
+app.get('/', (req, res) => {
+     res.render('todo/index');
 });
 
-// 「api/db-check」アクセス時
+// 「api/db-check」アクセス時 
 app.get('/api/db-check', async (_req, res) => {
   try {
     const result = await pool.query('SELECT 1 AS connection_test');
@@ -40,6 +43,12 @@ app.get('/api/db-check', async (_req, res) => {
     res.status(503).json({ status: 'error', database: 'unavailable' });
   }
 });
+
+// ==========================================
+// TODOアプリ用に追加したルート
+// ==========================================
+app.use('/todo', todoPageRouter);
+app.use('/api/v1/todos', todoApiRouter);
 
 
 // ------------------------------

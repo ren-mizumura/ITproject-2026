@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODOアプリ</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .error { color: red; margin-bottom: 10px; min-height: 1.5em; }
+        .todo-input-group { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>TODOリスト</h1>
+    
+    <!-- エラーメッセージ表示領域 -->
+    <div id="error-message" class="error"></div>
+    
+    <div class="todo-input-group">
+        <input type="text" id="todo-title" placeholder="新しいTODOを入力" maxlength="100">
+        <button id="add-btn">追加</button>
+    </div>
+
+    <!-- TODO一覧表示領域 -->
+    <ul id="todo-list">
+        <!-- JSにより動的にli要素が追加されます -->
+    </ul>
+
+    <!-- フロントエンドスクリプトの読み込み -->
+    <script src="/todo/TodoApi.js"></script>
+    <script src="/todo/main.js"></script>
+</body>
+</html>
