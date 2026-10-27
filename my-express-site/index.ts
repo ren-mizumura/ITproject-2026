@@ -3,8 +3,8 @@ import { pool } from './db.js';
 import type { Request, Response } from 'express';
 import path from 'path';
 import { todoPageRouter, todoApiRouter } from './src/apps/todo/todoRouter.js';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+// import fs from 'fs';
+// import { fileURLToPath } from 'url';
 
 // ESモジュール環境で現在のファイルの場所(__dirname)を取得するお決まりの記述
 // const __filename = fileURLToPath(import.meta.url);
