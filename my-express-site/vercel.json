@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "index.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["views/**"]
+      }
     }
   ],
   "routes": [
@@ -11,10 +14,5 @@
       "src": "/(.*)",
       "dest": "index.ts"
     }
-  ],
-  "functions": {
-    "index.ts": {
-      "includeFiles": "views/**"
-    }
-  }
+  ]
 }
