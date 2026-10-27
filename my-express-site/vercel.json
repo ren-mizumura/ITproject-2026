@@ -1,20 +1,15 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "index.ts",
-      "use": "@vercel/node"
+  "functions": {
+    "index.ts": {
+      "runtime": "@vercel/node",
+      "includeFiles": "views/**"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
       "dest": "index.ts"
     }
-  ],
-  "functions": {
-    "index.ts": {
-      "includeFiles": "views/**"
-    }
-  }
+  ]
 }
