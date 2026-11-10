@@ -28,18 +28,23 @@ const port: number = 3000; // ローカルで使用するポート番号
 // ------------------------------
 // Expressの基本設定
 // ------------------------------
-app.use(express.urlencoded({ extended: true })); // フォームから送信されたデータを受け取れるようにする
-app.use(express.static(path.join(process.cwd(), 'public'))); // CSSや画像などの静的ファイルを公開する
-app.set('view engine', 'ejs'); // テンプレートエンジンにEJSを設定
-app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存するフォルダーを指定
-// 実行位置（__dirname）の直下に views があればそれを使い、
-// なければ1階層上の views（ローカルのビルド後環境 dist/ の外）を見に行く
-// let viewsPath = path.join(__dirname, 'views');
-// if (!fs.existsSync(viewsPath)) {
-//   viewsPath = path.join(__dirname, '../views');
-// }
-// app.set('views', viewsPath); 
+app.use(express.urlencoded({ extended: true }));
 
+// public フォルダのパス解決
+let publicPath = path.join(__dirname, 'public');
+if (!fs.existsSync(publicPath)) {
+  publicPath = path.join(__dirname, '../public');
+}
+app.use(express.static(publicPath));
+
+app.set('view engine', 'ejs');
+
+// views フォルダのパス解決（コメントアウトを解除・調整）
+let viewsPath = path.join(__dirname, 'views');
+if (!fs.existsSync(viewsPath)) {
+  viewsPath = path.join(__dirname, '../views');
+}
+app.set('views', viewsPath);
 
 app.use(express.json());
 
