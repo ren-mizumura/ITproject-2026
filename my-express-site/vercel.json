@@ -3,15 +3,13 @@
   "builds": [
     {
       "src": "index.ts",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["views/**", "public/**"]
-      }
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "handle": "filesystem"
+      "src": "/todo/(.*\\.js)",
+      "dest": "/public/todo/$1"
     },
     {
       "src": "/(.*)",
