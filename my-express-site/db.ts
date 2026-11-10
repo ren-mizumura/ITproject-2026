@@ -8,4 +8,7 @@ if (!process.env.DATABASE_URL) {
 export const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   max: 2,
+  ssl: {
+    rejectUnauthorized: false, // Neon DBなどのクラウド環境で必要
+  },
 });
