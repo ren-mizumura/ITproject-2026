@@ -34,11 +34,11 @@ app.set('view engine', 'ejs'); // テンプレートエンジンにEJSを設定
 app.set('views', path.join(process.cwd(), 'views')); // EJSファイルを保存するフォルダーを指定
 // 実行位置（__dirname）の直下に views があればそれを使い、
 // なければ1階層上の views（ローカルのビルド後環境 dist/ の外）を見に行く
-let viewsPath = path.join(__dirname, 'views');
-if (!fs.existsSync(viewsPath)) {
-  viewsPath = path.join(__dirname, '../views');
-}
-app.set('views', viewsPath); 
+// let viewsPath = path.join(__dirname, 'views');
+// if (!fs.existsSync(viewsPath)) {
+//   viewsPath = path.join(__dirname, '../views');
+// }
+// app.set('views', viewsPath); 
 
 
 app.use(express.json());
