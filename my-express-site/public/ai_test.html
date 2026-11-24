@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini API 疎通テスト</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 16px;
+        line-height: 1.6;
+      }
+      .field {
+        margin-bottom: 16px;
+      }
+      label {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 4px;
+      }
+      input[type="password"],
+      input[type="text"],
+      textarea,
+      select {
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 14px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 15px;
+        cursor: pointer;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 16px;
+        border-radius: 6px;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .status-ok {
+        color: #0a7b34;
+        font-weight: bold;
+      }
+      .status-ng {
+        color: #c92a2a;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Gemini API 疎通テスト</h1>
+
+    <div class="field">
+      <label for="apiKey">APIキー（AIza...）</label>
+      <input
+        type="password"
+        id="apiKey"
+        placeholder="Google AI Studio の APIキーを入力"
+      />
+    </div>
+
+    <div class="field">
+      <label for="model">モデル名</label>
+      <select
+        id="model"
+        class="w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+      >
+        <option value="gemini-3.8-flash">gemini-3.8-flash</option>
+        <option value="gemini-3.5-flash-lite">gemini-3.5-flash-lite</option>
+        <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="prompt">プロンプト</label>
+      <textarea id="prompt" rows="3">
+疎通テストです。正常に受信できていたら「OK」とだけ返答してください。</textarea
+      >
+    </div>
+
+    <button id="sendBtn">リクエスト送信</button>
+
+    <h3>実行結果</h3>
+    <div id="status">未実行</div>
+    <pre id="result">ここにレスポンスが表示されます</pre>
+
+    <script>
+      const sendBtn = document.getElementById("sendBtn");
+      const statusEl = document.getElementById("status");
+      const resultEl = document.getElementById("result");
+
+      sendBtn.addEventListener("click", async () => {
+        const apiKey = document.getElementById("apiKey").value.trim();
+        const model = document.getElementById("model").value;
+        const prompt = document.getElementById("prompt").value.trim();
+
+        if (!apiKey) {
+          alert("APIキーを入力してください。");
+          return;
+        }
+
+        sendBtn.disabled = true;
+        statusEl.className = "";
+        statusEl.textContent = "送信中...";
+        resultEl.textContent = "";
+
+        const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+        try {
+          const res = await fetch(endpoint, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [{ text: prompt }],
+                },
+              ],
+            }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            statusEl.className = "status-ng";
+            statusEl.textContent = `エラー (HTTP ${res.status})`;
+            resultEl.textContent = JSON.stringify(data, null, 2);
+            return;
+          }
+
+          const replyText =
+            data?.candidates?.[0]?.content?.parts?.[0]?.text ??
+            "(テキストなし)";
+          statusEl.className = "status-ok";
+          statusEl.textContent = `成功 (HTTP ${res.status})`;
+          resultEl.textContent = `【応答テキスト】\n${replyText}\n\n【生JSON】\n${JSON.stringify(data, null, 2)}`;
+        } catch (err) {
+          statusEl.className = "status-ng";
+          statusEl.textContent = "通信エラー（ネットワークまたはCORS）";
+          resultEl.textContent = err.message;
+        } finally {
+          sendBtn.disabled = false;
+        }
+      });
+    </script>
+  </body>
+</html>
